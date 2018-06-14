@@ -24,3 +24,22 @@ class GraphConvLayer:
         self.activation = activation 
         self.bias = bias 
 
+        with tf.variable_scope(name):
+            with tf.name_scope("weight"):
+                self.w = tf.get_variable(name="W", 
+                        shape=(self.input_dim, self.output_dim),
+                        initializer=tf.contrib.layers.xavier_initializer())
+                
+            if self.bias:
+                with tf.name_scope("bias"):
+                    self.b = tf.get_variable(name="b",
+                            initializer=tf.constant(0.1, shape=(self.output_dim, )))
+
+
+    def forward(self, adj_norm, x, sparse=False):
+        hw = dot(x, self.w, sparse=sparse)
+        ahw = dot(adj_norm, hw, sparse=True)
+        if not self.bias:
+            return self.activation(ahw)
+        
+        return self.activation(tf.nn.bias_add(ahw, self.bias))
