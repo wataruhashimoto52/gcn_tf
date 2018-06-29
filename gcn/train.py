@@ -136,8 +136,8 @@ if __name__ == "__main__":
 
     ph = {
         'adj_norm': tf.sparse_placeholder(tf.float32, name="adj_matrix"),
-        'x': tf.sparse_placeholder(tf.float32, name="x"),
-        'labels': tf.placeholder(tf.float32, shape=(n_nodes, nb_classes)),
+        'x': tf.sparse_placeholder(tf.float32, name="x", shape=(n_nodes, nb_classes)),
+        'labels': tf.placeholder(tf.float32),
         'mask': tf.placeholder(tf.int32)
     }
 
